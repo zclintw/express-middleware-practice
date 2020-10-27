@@ -30,6 +30,7 @@ module.exports = ({ period, max, redis }) => async (req, res, next) => {
       .expire(ip, period + 10)
       .exec();
 
+    debug({ period, max, count });
     if (count > max) {
       return next(createError(429));
     }

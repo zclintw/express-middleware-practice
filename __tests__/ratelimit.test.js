@@ -1,4 +1,3 @@
-const debug = require('debug')('projectd:test:ratelimt');
 const Redis = require('ioredis-mock');
 const moment = require('moment');
 

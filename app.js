@@ -7,7 +7,6 @@ const Redis = require('ioredis');
 
 const ratelimit = require('./middleware/ratelimit.js');
 const indexRouter = require('./routes/index');
-const usersRouter = require('./routes/users');
 
 const redis = new Redis();
 
@@ -22,10 +21,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(ratelimit({ period: 60, max: 2, redis }));
+app.use(ratelimit({ period: 60, max: 60, redis }));
 
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
@@ -34,7 +32,6 @@ app.use((req, res, next) => {
 
 // error handler
 app.use((err, req, res, next) => {
-  console.log('>>> error', err);
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
