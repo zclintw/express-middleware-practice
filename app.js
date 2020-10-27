@@ -5,10 +5,11 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const Redis = require('ioredis');
 
+const { REDIS: REDIS_OPTS, RATELIMIT: RATELIMIT_OPTS } = require('./config.js');
 const ratelimit = require('./middleware/ratelimit.js');
 const indexRouter = require('./routes/index');
 
-const redis = new Redis();
+const redis = new Redis(REDIS_OPTS.PORT, REDIS_OPTS.HOST);
 
 const app = express();
 
@@ -21,7 +22,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(ratelimit({ period: 60, max: 60, redis }));
+app.use(ratelimit({ period: RATELIMIT_OPTS.PERIOD, max: RATELIMIT_OPTS.MAX, redis }));
 
 app.use('/', indexRouter);
 
