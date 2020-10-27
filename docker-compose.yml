@@ -1,0 +1,15 @@
+version: "3"
+services:
+  web:
+    build: .
+    ports:
+      - 3000:3000
+    environment:
+      - DEBUG=projectd:*
+      - REDIS_HOST=redis
+    depends_on:
+      - redis
+  redis:
+    image: redis
+    ports:
+      - 6379:6379
